@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Typing Master Pro: Refined Edition</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #4a90e2;
+            --secondary-color: #f39c12;
+            --background-color: #2c3e50;
+            --text-color: #ecf0f1;
+        }
+        body {
+            font-family: 'Roboto', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background-color: var(--background-color);
+            color: var(--text-color);
+        }
+        .game-container {
+            text-align: center;
+            background-color: rgba(255, 255, 255, 0.1);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+            width: 90%;
+            max-width: 800px;
+        }
+        h1, h2 {
+            color: var(--secondary-color);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        h1 {
+            font-size: 36px;
+            margin-bottom: 20px;
+        }
+        h2 {
+            font-size: 24px;
+            margin-top: 30px;
+        }
+        #words-display {
+            font-size: 28px;
+            margin-bottom: 30px;
+            height: 120px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            padding: 10px;
+            background-color: rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+        }
+        .word {
+            margin: 0 10px;
+            transition: all 0.3s ease;
+            padding: 5px 10px;
+            border-radius: 5px;
+        }
+        .current-word {
+            font-weight: bold;
+            color: var(--primary-color);
+            background-color: rgba(255, 255, 255, 0.1);
+            box-shadow: 0 0 10px rgba(74, 144, 226, 0.5);
+        }
+        #input-field {
+            font-size: 24px;
+            padding: 15px;
+            width: 80%;
+            margin-bottom: 30px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border: none;
+            border-radius: 10px;
+            color: var(--text-color);
+            transition: all 0.3s ease;
+        }
+        #input-field:focus {
+            outline: none;
+            box-shadow: 0 0 15px rgba(74, 144, 226, 0.7);
+        }
+        .stats-container {
+        display: flex;
+        justify-content: space-around;
+        margin-bottom: 30px;
+        align-items: center; /* This will vertically align items */
+    }
+
+        .stat {
+        font-size: 20px;
+        background-color: rgba(0, 0, 0, 0.2);
+        padding: 10px 20px;
+        border-radius: 10px;
+        min-width: 120px;
+    }
+
+        #time {
+        font-size: 36px; /* Increased font size */
+        font-weight: bold; /* Make it bold for emphasis */
+        color: #ffffff; /* Pure white color */
+        background-color: rgba(0, 0, 0, 0.4); /* Slightly darker background for contrast */
+        padding: 15px 25px; /* Increased padding for larger touch target */
+        border-radius: 15px; /* Slightly rounded corners */
+        min-width: 160px; /* Increased minimum width */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        box-shadow: 0 0 10px rgba(255, 255, 255, 0.1); /* Subtle glow effect */
+    }
+        }
+     #start-btn {
+        background-color: #27ae60;  /* A green color to differentiate it */
+        margin-top: 20px;
+    }
+
+    #start-btn:hover {
+        background-color: #2ecc71;
+    }
+
+    #start-btn:disabled {
+        background-color: #7f8c8d;
+        cursor: not-allowed;
+    }
+    }
+        }
+        #level-indicator {
+            font-size: 18px;
+            margin-top: 20px;
+        }
+        .difficulty-selector {
+            margin-top: 20px;
+        }
+        .difficulty-btn, #start-btn {
+        font-size: 18px;
+        padding: 10px 20px;
+        margin: 0 10px;
+        cursor: pointer;
+        background-color: var(--secondary-color);
+        color: white;
+        border: none;
+        border-radius: 5px;
+        transition: all 0.3s ease;
+    }
+
+    .difficulty-btn:hover, #start-btn:hover {
+        background-color: #e67e22;
+    }
+
+    .difficulty-btn.active {
+        background-color: #d35400;
+    }
+        .streak-indicator {
+            font-size: 18px;
+            margin-top: 20px;
+            color: var(--secondary-color);
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        .pulse {
+            animation: pulse 0.5s;
+        }
+        .analytics-container {
+            background-color: rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+        .analytics-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .game-container {
+                width: 95%;
+                padding: 15px;
+            }
+            h1 { font-size: 28px; }
+            #words-display { font-size: 22px; }
+            #input-field { font-size: 20px; width: 90%; }
+            .stat { font-size: 16px; padding: 8px 12px; }
+            .difficulty-btn { font-size: 16px; padding: 8px 15px; }
+        }
+        /* Keyboard heatmap styles */
+        .keyboard {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
+            max-width: 800px;
+            margin: 20px auto;
+        }
+        .keyboard-row {
+            display: flex;
+            gap: 5px;
+        }
+        .key {
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #444;
+            border-radius: 5px;
+            font-size: 12px;
+            transition: background-color 0.3s;
+        }
+        .heatmap-note {
+            font-size: 14px;
+            margin-top: 10px;
+            color: var(--text-color);
+            opacity: 0.8;
+        }
+    </style>
+</head>
+<body>
+    <div class="game-container">
+        <h1>Typing Master Pro</h1>
+        <div id="words-display"></div>
+        <input type="text" id="input-field" autocomplete="off" disabled placeholder="Type here...">
+        <div class="stats-container">
+            <div class="stat" id="score">Words: 0</div>
+            <div class="stat" id="time">Time: 60s</div>
+            <div class="stat" id="wpm">WPM: 0</div>
+        </div>
+        <div class="difficulty-selector">
+            <button class="difficulty-btn" data-difficulty="easy">Easy</button>
+            <button class="difficulty-btn active" data-difficulty="medium">Medium</button>
+            <button class="difficulty-btn" data-difficulty="hard">Hard</button>
+        </div>
+        <div id="level-indicator">Level: 1</div>
+        <div class="streak-indicator">Streak: 0</div>
+        <button id="start-btn">Start Game</button>
+        
+        <div class="analytics-container">
+            <h2>Learning Analytics</h2>
+            <div id="analytics-content"></div>
+        </div>
+
+        <div class="keyboard" id="keyboard-heatmap"></div>
+        <p class="heatmap-note">Heatmap: Red keys indicate frequent typing errors. Darker red = more errors.</p>
+    </div>
+
+    <script>
+        const easyWords = [
+            "the", "be", "to", "of", "and", "a", "in", "that", "have", "I", 
+            "it", "for", "not", "on", "with", "he", "as", "you", "do", "at", 
+            "this", "but", "his", "by", "from", "they", "we", "say", "her", "she", 
+            "or", "an", "will", "my", "one", "all", "would", "there", "their", "what", 
+            "so", "up", "out", "if", "about", "who", "get", "which", "go", "me", 
+            "when", "make", "can", "like", "time", "no", "just", "him", "know", "take", 
+            "people", "into", "year", "your", "good", "some", "could", "them", "see", "other", 
+            "than", "then", "now", "look", "only", "come", "its", "over", "think", "also", 
+            "back", "after", "use", "two", "how", "our", "work", "first", "well", "way", 
+            "even", "new", "want", "because", "any", "these", "give", "day", "most", "us",
+            "apple", "ant", "arm", "bag", "ball", "bat", "bed", "bee", "bell", "bike",
+            "bird", "boat", "book", "box", "boy", "bus", "cake", "car", "cat", "chair",
+            "clock", "coat", "cow", "cup", "dad", "desk", "dog", "doll", "door", "duck",
+            "egg", "elk", "eye", "fan", "fish", "flag", "fork", "frog", "game", "gate",
+            "girl", "glass", "goat", "grass", "hand", "hat", "head", "heart", "hill", "home",
+            "horse", "house", "ice", "ink", "jar", "jam", "jet", "jug", "key", "kite",
+            "lamp", "leaf", "leg", "lion", "lip", "log", "man", "map", "mask", "mat",
+            "milk", "moon", "mop", "mouse", "mug", "nail", "neck", "nest", "nose", "nut",
+            "owl", "pan", "pen", "pet", "pie", "pig", "pin", "pot", "queen", "quilt",
+            "rabbit", "rain", "rat", "ring", "road", "rock", "roof", "room", "rope", "rose",
+            "rug", "salt", "sand", "sea", "seal", "sheep", "ship", "shoe", "sink", "sky",
+            "snow", "sock", "sofa", "son", "spoon", "star", "sun", "table", "tail", "tent",
+            "tiger", "tile", "top", "toy", "tree", "truck", "tub", "vase", "vest", "wall",
+            "watch", "water", "whale", "wheel", "wind", "window", "wine", "wolf", "wood", "xylophone",
+            "yacht", "yak", "yard", "yawn", "yo-yo", "zebra", "apple", "ant", "arm", "art", "axe", "bag", "bat", "bed", "bee", "beg",
+            "bet", "bib", "bid", "big", "bin", "bit", "bow", "box", "boy", "bun",
+            "bus", "but", "cab", "can", "cap", "car", "cat", "cob", "cod", "cog",
+            "cop", "cot", "cow", "cub", "cup", "cut", "dad", "dam", "day", "den",
+            "dew", "did", "dig", "dip", "doc", "dog", "dot", "dry", "dug", "dye",
+            "ear", "eat", "eel", "egg", "end", "eve", "eye", "fan", "far", "fat",
+            "fee", "fen", "few", "fig", "fin", "fir", "fit", "fix", "flu", "fly",
+            "fog", "for", "fox", "fry", "fun", "fur", "gag", "gap", "gas", "gel",
+            "gem", "get", "gig", "gnu", "gob", "god", "got", "gum", "gun", "gut",
+            "gym", "had", "ham", "has", "hat", "hay", "hem", "hen", "her", "hid",
+            "him", "hip", "his", "hit", "hog", "hop", "hot", "how", "hub", "hug",
+            "hut", "ice", "ill", "ink", "inn", "ion", "ivy", "jab", "jam", "jar",
+            "jaw", "jay", "jet", "jew", "jig", "job", "jog", "joy", "jug", "jun",
+            "jut", "keg", "key", "kid", "kin", "kit", "lab", "lac", "lad", "lag",
+            "lap", "law", "lay", "led", "leg", "let", "lid", "lie", "lip", "lit",
+            "log", "lot", "low", "lug", "mad", "man", "map", "mar", "mat", "may",
+            "men", "met", "mew", "mid", "mil", "mix", "mob", "mom", "moo", "mop",
+            "mow", "mud", "mug", "nab", "nag", "nap", "nay", "net", "new", "nib",
+            "nil", "nip", "nod", "nor", "not", "now", "nun", "nut", "oaf", "oak",
+            "oar", "oat", "odd", "off", "oil", "old", "one", "opt", "orb", "our",
+            "out", "owe", "owl", "own", "pac", "pad", "pal", "pan", "par", "pat",
+            "paw", "pay", "pea", "peg", "pen", "pep", "per", "pet", "pew", "pic",
+            "pie", "pig", "pin", "pit", "ply", "pod", "pop", "pot", "pry", "pub",
+            "pup", "put", "qua", "quo", "rag", "ram", "ran", "rap", "rat", "raw",
+            "ray", "red", "rib", "rid", "rig", "rim", "rip", "rob", "rod", "rot",
+            "row", "rub", "rug", "rum", "run", "rut", "rye", "sac", "sad", "sag",
+            "sal", "sap", "sat", "saw", "say", "sea", "see", "set", "sew", "she",
+            "shy", "sin", "sip", "sir", "sis", "sit", "six", "ski", "sky", "sly",
+            "sob", "sod", "son", "sow", "soy", "spa", "spy", "sub", "sum", "sun",
+            "sup", "tab", "tad", "tag", "tan", "tap", "tar", "tea", "ten", "the",
+            "thy", "tie", "tin", "tip", "toe", "ton", "too", "top", "tow", "toy",
+            "try", "tub", "tug", "two", "ugh", "ump", "urn", "use", "van", "vat",
+            "vet", "vex", "via", "vie", "vow", "wad", "wag", "war", "was", "wax",
+            "way", "web", "wed", "wee", "wet", "who", "why", "wig", "win", "wit",
+            "won", "woo", "wow", "wry", "yak", "yam", "yap", "yaw", "yay", "yen",
+            "yes", "yet", "you", "yum", "yup", "zag", "zap", "zed", "zen", "zig",
+            "zip", "zoo", "zuz",
+            "act", "all", "and", "ask", "art", "add", "age", "air", "ape", "arm", "axe",
+            "bat", "bug", "bad", "bed", "bag", "big", "bee", "boy", "buy", "bus", "box", "bar",
+            "cat", "car", "can", "cup", "cut", "cow", "cob", "cap", "coo", "cot", "cue", "cab",
+            "dog", "dot", "dip", "dig", "dad", "dam", "day", "dew", "die", "due", "duo", "dub",
+            "eat", "end", "ear", "eel", "egg", "elf", "eye", "emu", "eve", "esp", "era", "ego",
+            "fan", "fit", "fun", "fat", "fog", "fin", "fly", "fir", "fee", "few", "fig", "fib",
+            "gum", "gun", "gap", "gas", "get", "god", "gut", "got", "gee", "gig", "gem", "guy",
+            "hat", "hot", "hut", "hug", "hip", "hit", "him", "her", "hop", "how", "hen", "has",
+            "ink", "ice", "ill", "imp", "its", "inn", "ire", "ivy", "ion", "its", "icy", "irk",
+            "jet", "jar", "joy", "jam", "jot", "jug", "jaw", "job", "jig", "jab", "jog", "jot",
+            "kit", "kid", "key", "ken", "kin", "kid", "koi", "kay", "keg", "kit", "kip", "kay",
+            "lip", "log", "lot", "lad", "leg", "lid", "lay", "lab", "law", "lap", "led", "lag",
+            "mug", "map", "mop", "mat", "man", "may", "men", "mad", "mud", "mom", "met", "mix",
+            "nod", "nip", "net", "nut", "not", "new", "nap", "nag", "nan", "nab", "nay", "nee",
+            "oat", "oil", "owl", "orb", "out", "old", "one", "our", "off", "own", "odd", "out",
+            "pot", "pat", "pen", "pin", "pan", "pet", "put", "pup", "pit", "pal", "pop", "pod",
+            "qua", "quo", "qin", "qua", "que", "qui", "qat", "qis", "qin", "qis", "qin", "qis",
+            "rat", "run", "rub", "rag", "rim", "red", "row", "rug", "rip", "rap", "rob", "rid",
+            "sun", "sit", "sat", "sip", "set", "sad", "sop", "sir", "see", "sow", "sue", "sup",
+            "tap", "tan", "top", "tip", "ten", "tug", "tag", "tie", "toy", "two", "tea", "tab",
+            "urn", "use", "urn", "ute", "urn", "ups", "urn", "ump", "urn", "urn", "ups", "urn",
+            "van", "vat", "vet", "van", "vie", "van", "veg", "van", "vis", "van", "vow", "vet",
+            "win", "wet", "wag", "was", "war", "wig", "wok", "wit", "way", "who", "wee", "wow",
+            "xis", "xis", "xis", "xis", "xis", "xis", "xis", "xis", "xis", "xis", "xis", "xis",
+            "yap", "yen", "yak", "you", "yam", "yet", "yup", "yaw", "yea", "yum", "yaw", "yet",
+            "zap", "zip", "zit", "zoo", "zen", "zap", "zig"
+        ];
+
+        const mediumWords = [
+            "ability", "able", "about", "above", "accept", "according", "account", "across", "act", "action",
+            "activity", "actually", "add", "address", "administration", "admit", "adult", "affect", "after", "again",
+            "against", "age", "agency", "agent", "ago", "agree", "agreement", "ahead", "air", "all",
+            "allow", "almost", "alone", "along", "already", "also", "although", "always", "American", "among",
+            "amount", "analysis", "and", "animal", "another", "answer", "any", "anyone", "anything", "appear",
+            "apply", "approach", "area", "argue", "arm", "around", "arrive", "art", "article", "artist",
+            "as", "ask", "assume", "at", "attack", "attention", "attorney", "audience", "author", "authority",
+            "available", "avoid", "away", "baby", "back", "bad", "bag", "ball", "bank", "bar",
+            "base", "be", "beat", "beautiful", "because", "become", "bed", "before", "begin", "behavior",
+            "achieve", "balloon", "cactus", "daffodil", "eagle", "fabricate", "galaxy", "habitat", "ignite", "joyful",
+            "kinetic", "lavender", "maestro", "navigate", "octopus", "panorama", "quantum", "radiant", "serenity", "twilight",
+            "umbrella", "velocity", "whisper", "xylophone", "yearning", "zealous", "access", "blossom", "carnival", "diligent",
+            "embrace", "flourish", "graceful", "harmonic", "imagine", "jubilant", "kindness", "laughter", "majestic", "nurture",
+            "optimist", "patience", "quest", "resonant", "sapphire", "tranquil", "unify", "vibrant", "wonder", "xenon",
+            "yield", "zephyr", "admire", "brave", "crystal", "dreamer", "elevate", "fortune", "genuine", "heroic",
+            "inspire", "journey", "kindle", "loyalty", "marvel", "noble", "origin", "passion", "quality", "robust",
+            "scholar", "triumph", "unique", "vision", "wisdom", "xanadu", "young", "zest", "agility", "bravery",
+            "courage", "devotion", "elegant", "freedom", "grateful", "harmony", "innovate", "justice", "knowledge", "liberty",
+            "magical", "nurture", "optimism", "paradise", "quest", "rejoice", "sincerity", "trust", "understanding", "variety",
+            "winter", "xanadu", "youth", "zeal", "ambition", "belief", "compassion", "dignity", "empathy", "faith",
+            "generous", "honesty", "integrity", "joy", "kindness", "love", "modesty", "nature", "openness",
+            "peace",
+            "quality", "respect", "simplicity", "trust", "unity", "valor", "wisdom", "xenial", "yield", "zest",
+            "adventure", "bounty", "calm", "delight", "enthusiasm", "festive", "glee", "hope", "imagine", "jovial",
+            "keen", "lively", "merry", "novelty", "optimist", "playful", "quick", "radiant", "serene", "thankful",
+            "upbeat", "vibrant", "wonder", "xanadu", "youthful", "zealous", "authentic", "blissful", "cherish", "dream",
+            "enchant", "free", "gracious", "humble", "innocent", "joyous", "kindred", "laughter", "modest", "nurturing",
+            "open", "pleasant", "quick", "resolve", "sincere", "trust", "unassuming", "vivacious", "warmth", "xenodochial",
+            "youthful", "zestful", "agreeable", "benevolent", "cordial", "dependable", "easygoing", "friendly", "generous", "helpful",
+            "impartial", "jovial", "kind", "loyal", "modest", "nice", "optimistic", "polite", "quick", "reliable",
+            "sociable", "thoughtful", "understanding", "versatile", "willing", "xenodochial", "yearning", "zealous",
+            "apple", "actor", "above", "alone", "apply", "after", "again", "angel", "alarm", "adopt", "arrow", "album",
+            "baker", "begin", "brown", "bring", "brain", "basic", "brave", "bacon", "beach", "bench", "block", "bless",
+            "camel", "clean", "climb", "cloud", "crash", "crime", "craft", "crown", "crazy", "catch", "cheap", "cream",
+            "daily", "dance", "doubt", "drink", "dream", "drive", "dress", "depth", "donut", "drama", "dairy", "draft",
+            "earth", "eager", "eight", "event", "empty", "enter", "early", "enemy", "elder", "enjoy", "error", "exile",
+            "favor", "fence", "force", "frame", "fruit", "frost", "feast", "flame", "fresh", "flock", "fancy", "focus",
+            "gamer", "giant", "grape", "ghost", "glove", "globe", "grant", "grill", "grain", "grasp", "greed", "great",
+            "happy", "heart", "horse", "hotel", "hurry", "house", "habit", "human", "hover", "honey", "humor", "harsh",
+            "image", "index", "inner", "imply", "ideal", "input", "irony", "issue", "ivory", "igloo", "itchy", "items",
+            "joker", "jelly", "joint", "jewel", "judge", "juice", "jolly", "japan", "jumpy", "jazzy", "jokes", "junta",
+            "knock", "knife", "kneel", "kneed", "known", "kings", "knees", "kinky", "kites", "knack", "kiosk", "knead",
+            "lunch", "lemon", "learn", "limit", "lunar", "lover", "lucky", "laugh", "layer", "leash", "liver", "logic",
+            "magic", "march", "mount", "money", "movie", "moral", "match", "mouse", "miner", "medal", "melon", "mango",
+            "never", "nurse", "night", "north", "nerve", "noble", "ninja", "novel", "noise", "needy", "ninth", "niche",
+            "ocean", "olive", "orbit", "owner", "opera", "other", "occur", "order", "onion", "offer", "oasis",
+            "piano", "pound", "price", "pride", "prize", "party", "plant", "point", "peace", "plush", "power", "pulse",
+            "quilt", "quick", "quiet", "queen", "query", "quack", "quart", "quest", "quake", "quota", "quote", "quill",
+            "radio", "reach", "raise", "ready", "right", "round", "ruler", "reuse", "rapid", "rider", "rough", "reset",
+            "snake", "shine", "shark", "sheet", "store", "sunny", "sheep", "smile", "sweat", "smell", "sight", "spoon",
+            "train", "tiger", "table", "thumb", "truth", "treat", "taste", "tough", "track", "twist", "tulip", "trend",
+            "uncle", "upper", "unite", "urban", "until", "ultra", "upset", "usage", "usher", "unfit", "unity", "unzip",
+            "vivid", "vapor", "voice", "voter", "vital", "value", "visit", "verse", "vocal", "vault", "villa", "viper",
+            "waste", "wider", "weird", "whale", "wrist", "worry", "wound", "whisk", "wrath", "whiny", "wheat", "whisk",
+            "xenon", "xylem", "xerox", "xenon", "xylan", "xenia", "xylem", "xenon", "xerox", "xenia", "xylol", "xenon",
+            "young", "yacht", "yield", "yummy", "youth", "yearn", "yeast", "yours", "yikes", "yearn", "yucca", "yawns",
+            "zebra", "zesty", "zonal", "zones", "zincs", "zeros", "zombi", "zippy", "zeals", "zings", "zooms", "zappy"
+        ];
+
+        const hardWords = [
+            "abysmal", "acumen", "adamant", "adumbrate", "alacrity", "amiable", "amorphous", "anachronistic", "antediluvian", "antipathy",
+            "arcane", "avarice", "axiomatic", "beguile", "bereft", "blandishment", "callous", "candor", "capitulate", "carouse",
+            "caucus", "circumlocution", "circumspect", "clandestine", "coalesce", "cogent", "cognizant", "commensurate", "compelling", "comprehensive",
+            "conciliatory", "concomitant", "conduce", "conflagration", "congruent", "connive", "consanguineous", "conspicuous", "contiguous", "contrite",
+            "convention", "corpulence", "correlate", "corroborate", "countenance", "cryptic", "curtail", "dearth", "debacle", "debauchery",
+            "deference", "demur", "denouement", "deride", "derivative", "desiccate", "desultory", "deterrent", "diatribe", "dichotomy",
+            "diffidence", "dilatory", "diminutive", "discern", "discomfit", "disparate", "dissemble", "dissonance", "divergent", "dogmatic",
+            "dubious", "ebullient", "eclectic", "effervescent", "effrontery", "elegy", "elicit", "eloquent", "emancipate", "embezzlement",
+            "emollient", "empirical", "emulate", "enervate", "enfranchise", "engender", "ephemeral", "epistolary", "equanimity", "equivocate",
+            "abacus", "byzantine", "cacophony", "dachshund", "eclectic", "facsimile", "gazetteer", "haberdashery", "iconoclast", "juxtapose",
+            "knickknack", "labyrinthine", "maelstrom", "nonchalant", "ostracize", "pandemonium", "quixotic", "rhapsodic", "silhouette", "triskaidekaphobia",
+            "umbrageous", "vicissitude", "wherewithal", "xylophone", "zephyr", "aberration", "beguile", "charismatic", "dichotomy",
+            "ebullient", "fastidious", "grandiloquent", "hegemony", "idiosyncratic", "jeopardize", "kaleidoscopic", "loquacious", "magnanimous", "necropolis",
+            "obfuscate", "panacea", "quintessential", "reciprocate", "scintillating", "tintinnabulation", "unequivocal", "vestigial", "winnow", "xenophobia",
+            "yearning", "zealotry", "abjure", "bombastic", "chiaroscuro", "defenestration", "egregious", "finagle", "galvanize", "harangue",
+            "impecunious", "jocular", "knell", "lugubrious", "malinger", "nefarious", "obsequious", "panoply", "quagmire", "recondite",
+            "sobriquet", "tintinnabulum", "unctuous", "veracity", "wunderkind", "xanadu", "yeoman", "zeitgeist", "accolade", "benevolent",
+            "chivalrous", "dauntless", "effervescent", "filibuster", "gossamer", "halcyon", "imbroglio", "jubilee", "kerfuffle", "laconic",
+            "mendacious", "neologism", "onomatopoeia", "persnickety", "quiescent", "recalcitrant", "soliloquy", "terpsichorean", "ubiquitous", "vivacious",
+            "winsome", "xenolith", "yokel", "zephyr", "ameliorate", "blandishment", "cacophonous", "deferential", "ebullient", "fastidious",
+            "gauche", "histrionic", "ignominious", "jocose", "kinetic", "loquacious", "mellifluous", "neoteric", "obsequious", "petrichor",
+            "quotidian", "rhadamanthine", "serendipitous", "terpsichorean", "unalloyed", "vertiginous", "wraith", "xeric", "yokel", "zephyr",
+            "antediluvian", "brobdingnagian", "circumlocution", "diaphanous", "empyrean", "fecund", "grandiloquent", "halcyon", "incandescent", "jocund",
+            "kalopsia", "lambent", "mellifluous", "numinous", "oneiric", "petrichor", "quintessential", "rapturous", "serendipitous", "tintinnabulation",
+            "undulating", "vespertine", "whimsical", "xanadu", "youthful", "apotheosis", "beatific", "coruscating", "dithyramb",
+            "effulgent", "felicitous", "gossamer", "halcyon", "illuminatus", "jubilant", "kaleidoscopic", "limerence", "myriad", "numinous",
+            "opulent", "propitious", "quintessence", "rhapsodic", "scintilla", "tintinnabulum", "untrammeled", "viridescent", "wafture", "xanadu",
+            "zenith", "ambrosia", "blithesome", "chatoyant", "dulcet", "evanescent", "fulgent", "gambol", "halcyon",
+            "inure", "jocund", "koan", "lilt", "mirific", "nepenthe", "opiate", "phantasmagoria", "quintessence", "redolent",
+            "seraglio", "threnody", "unalloyed", "vellichor", "whimsical", "xanadu", "yesteryear",
+            "abandon", "abstract", "absolve", "academic", "accessory", "accumulate", "acknowledge", "acquisition", "adversity", "aesthetic", "affectionate", "allegiance",
+            "beneficiary", "bibliography", "biodegradable", "blasphemous", "boulevard", "breathalyzer", "bureaucracy", "burgeoning", "butterfinger", "buoyancy", "byzantine", "bludgeon",
+            "catastrophe", "choreography", "circumference", "clairvoyant", "clandestine", "collaborate", "commiserate", "commemorate", "compassionate", "complementary", "comprehensive", "conscientious",
+            "dandelion", "debilitating", "deceitful", "deforestation", "deleterious", "demagogue", "demographic", "denouement", "detrimental", "disingenuous", "discombobulate", "disseminate",
+            "econometrics", "ecclesiastical", "eclecticism", "effervescence", "efficacious", "egalitarian", "elocutionist", "embellishment", "emancipation", "encephalopathy", "encyclopedic", "entrepreneurial",
+            "fastidious", "felicitations", "ferociously", "fibrillation", "fictitious", "flabbergasted", "fluctuation", "formidable", "fortuitous", "fraternization", "freelancing", "frivolously",
+            "geographical", "gentrification", "gesticulation", "grandiloquent", "gregariously", "guaranteeing", "gubernatorial", "gustatorily", "gyrification", "gymnastically", "gynecological", "grandiosity",
+            "hallucination", "harbinger", "heterogeneous", "hierarchical", "hippopotamus", "historiography", "holographically", "honorificabilitudinitatibus", "horticultural", "hydroponically", "hypersensitivity", "hyperventilate",
+            "iconoclastic", "idiosyncrasy", "illustriously", "immunodeficiency", "inconsequential", "incontrovertible", "indefatigable", "indistinguishable", "infinitesimal", "intercontinental", "interrogation", "intransigence",
+            "jargonistic", "jettisoned", "judiciously", "juxtaposition", "justifiability", "jingoistically", "journalistic", "jeopardizing", "jurisdictional", "juvenescence", "jeopardously", "jubilantly",
+            "kleptomania", "knickerbocker", "kaleidoscope", "kinesthetically", "knowledgeable", "knighthood", "kickboxing", "kilometric", "kindhearted", "keyboardist", "kitchenette", "kinetoscope",
+            "labyrinthine", "lackadaisical", "lamellibranch", "laparoscopic", "laryngologist", "latitudinarian", "lepidopteran", "lexicographer", "lilliputian", "linguistically", "liquidation", "lugubrious",
+            "magnanimous", "malfeasance", "marginalization", "misanthropic", "misrepresentation", "mitochondrial", "multitudinous", "mystification", "mythological", "magniloquent", "metallurgical", "meticulous",
+            "nefarious", "neurotransmitter", "nomenclature", "nonchalantly", "noncommittal", "nonconformist", "nondiscriminatory", "noninterference", "nonjudgmental", "nonprofessional", "nonreciprocal", "nutritiously",
+            "obfuscation", "obsequiously", "octogenarian", "oligarchical", "omnisciently", "omnipresence", "oncological", "operationalize", "opportunistically", "ornithological", "ostentatiously", "overcompensate",
+            "paleontologist", "pandemonium", "parliamentarian", "particularization", "pathophysiology", "penultimate", "perpendicular", "perpetuation",
+            "abysmal", "acumen", "adamant", "adumbrate", "alacrity", "amiable", "amorphous", "anachronistic", "antediluvian", "antipathy",
+            "arcane", "avarice", "axiomatic", "beguile", "bereft", "blandishment", "callous", "candor", "capitulate", "carouse",
+            "caucus", "circumlocution", "circumspect", "clandestine", "coalesce", "cogent", "cognizant", "commensurate", "compelling", "comprehensive",
+            "conciliatory", "concomitant", "conduce", "conflagration", "congruent", "connive", "consanguineous", "conspicuous", "contiguous", "contrite",
+            "convention", "corpulence", "correlate", "corroborate", "countenance", "cryptic", "curtail", "dearth", "debacle", "debauchery",
+            "deference", "demur", "denouement", "deride", "derivative", "desiccate", "desultory", "deterrent", "diatribe", "dichotomy",
+            "diffidence", "dilatory", "diminutive", "discern", "discomfit", "disparate", "dissemble", "dissonance", "divergent", "dogmatic",
+            "dubious", "ebullient", "eclectic", "effervescent", "effrontery", "elegy", "elicit", "eloquent", "emancipate", "embezzlement",
+            "emollient", "empirical", "emulate", "enervate", "enfranchise", "engender", "ephemeral", "epistolary", "equanimity",
+            "paleontologist", "pandemonium", "parliamentarian", "particularization", "pathophysiology", "penultimate", "perpendicular", "perpetuation", "pharmacological", "philanthropic", "philosophical", "photographically",
+            "quadriplegia", "quantification", "quarterfinal", "quasiperiodic", "quintessential", "quintuplicate", "quizzically", "quotidian", "quadrilateral", "quadruplication", "quantitatively", "quarantined",
+            "rambunctious", "recalcitrant", "recriminations", "rejuvenescence", "reminiscently", "reprehensibility", "reproachfully", "resurrection", "retroactively", "reverberation", "revisionist", "rhetorically",
+            "sanctimonious", "schizophrenia", "scintillating", "scrupulously", "sedimentation", "semiconductor", "sesquipedalian", "simplification", "simultaneously", "sophisticated", "speculative", "stereotypical",
+            "telecommunication", "teratogenicity", "tessellation", "thematically", "thermodynamic", "thrombocytopenia", "thundershower", "transfiguration", "transplantation", "triangulation", "trichinosis", "tumultuously",
+            "ubiquitous", "unconditionally", "uncontrollably", "underprivileged", "undifferentiated", "unenthusiastically", "unintelligibility", "unobjectionable", "unquestioningly", "unrecognizable", "unsubstantiated", "utilitarianism",
+            "vacillation", "vanguardist", "vasoconstrictor", "vaudevillian", "vectorization", "ventriloquist", "verification", "versification", "vexillology", "vicariously", "vilification", "vituperative",
+            "whimsicality", "whistleblower", "wretchedness", "windstorm", "waterproofing", "weatherization", "weatherproof", "weightlessness", "welterweight", "whistleblower", "whistleblower", "wholesomeness",
+            "xenotransplantation", "xerophthalmia", "xenodiagnosis", "xanthophyll", "xerophytically", "xenogamous", "xenogenetic", "xenographic", "xenoplastic", "xerographically", "xerothermic", "xylophonist",
+            "yachtswoman", "yearningly", "yellowjacket", "yieldability", "yottabyte", "youngberry", "youthfulness", "ytterbium", "yuppification", "yellowwood", "yesteryear", "youthfully",
+            "zealousness", "zestfulness", "zigzagging", "zillionaire", "zoogeography", "zooplankton", "zootechnics", "zootherapy", "zygomorphism", "zygomorphic", "zygomorphous", "zoonosis"
+        ];
+
+// Game variables
+let words = [...mediumWords];
+let score = 0;
+let time = 60;
+let wpm = 0;
+let wordQueue = [];
+let gameInterval;
+let startTime;
+let totalCharacters = 0;
+let correctCharacters = 0;
+let level = 1;
+let streak = 0;
+let difficulty = "medium";
+
+// DOM elements
+const wordsDisplay = document.getElementById('words-display');
+const inputField = document.getElementById('input-field');
+const scoreDisplay = document.getElementById('score');
+const timeDisplay = document.getElementById('time');
+const wpmDisplay = document.getElementById('wpm');
+const startButton = document.getElementById('start-btn');
+const levelIndicator = document.getElementById('level-indicator');
+const streakIndicator = document.querySelector('.streak-indicator');
+const difficultyButtons = document.querySelectorAll('.difficulty-btn');
+
+// Game functions
+function getRandomWord() {
+    return words[Math.floor(Math.random() * words.length)];
+}
+
+function updateWordQueue() {
+    while (wordQueue.length < 5) {
+        wordQueue.push(getRandomWord());
+    }
+    displayWords();
+}
+
+function displayWords() {
+    wordsDisplay.innerHTML = '';
+    wordQueue.forEach((word, index) => {
+        const wordSpan = document.createElement('span');
+        wordSpan.textContent = word;
+        wordSpan.classList.add('word');
+        if (index === 0) wordSpan.classList.add('current-word');
+        wordsDisplay.appendChild(wordSpan);
+    });
+}
+
+function updateGame() {
+    wordQueue.shift();
+    updateWordQueue();
+    inputField.value = '';
+    streak++;
+    updateStreakIndicator();
+}
+
+function updateScore() {
+    score++;
+    scoreDisplay.textContent = `Words: ${score}`;
+    totalCharacters += wordQueue[0].length;
+    updateLevel();
+}
+
+function updateTime() {
+    timeDisplay.textContent = `Time: ${time}s`;
+    if (time === 0) {
+        endGame();
+    } else {
+        time--;
+    }
+}
+
+function updateWPM() {
+    const timeElapsed = (Date.now() - startTime) / 60000; // in minutes
+    wpm = Math.round((totalCharacters / 5) / timeElapsed);
+    wpmDisplay.textContent = `WPM: ${wpm}`;
+}
+
+function updateLevel() {
+    const newLevel = Math.floor(score / 10) + 1;
+    if (newLevel > level) {
+        level = newLevel;
+        levelIndicator.textContent = `Level: ${level}`;
+        levelIndicator.classList.add('pulse');
+        setTimeout(() => levelIndicator.classList.remove('pulse'), 500);
+    }
+}
+
+function updateStreakIndicator() {
+    streakIndicator.textContent = `Streak: ${streak}`;
+    if (streak > 0) {
+        streakIndicator.classList.add('pulse');
+        setTimeout(() => streakIndicator.classList.remove('pulse'), 500);
+    }
+}
+
+function startGame() {
+    score = 0;
+    time = 60;
+    wpm = 0;
+    totalCharacters = 0;
+    correctCharacters = 0;
+    wordQueue = [];
+    level = 1;
+    streak = 0;
+    keyErrors = {};
+
+    // Reset analytics
+    typingAnalytics = {
+        fastestWPM: 0,
+        averageWPM: 0
+    };
+
+    startTime = Date.now();
+    updateWordQueue();
+    inputField.disabled = false;
+    inputField.focus();
+    startButton.disabled = true;
+    levelIndicator.textContent = `Level: ${level}`;
+    updateStreakIndicator();
+    updateHeatmap();
+
+    gameInterval = setInterval(() => {
+        updateTime();
+        updateWPM();
+        updateAnalytics();
+    }, 1000);
+}
+
+function setDifficulty(newDifficulty) {
+    difficulty = newDifficulty;
+    difficultyButtons.forEach(btn => btn.classList.remove('active'));
+    event.target.classList.add('active');
+    switch(difficulty) {
+        case 'easy':
+            words = [...easyWords];
+            break;
+        case 'medium':
+            words = [...mediumWords];
+            break;
+        case 'hard':
+            words = [...hardWords];
+            break;
+    }
+    updateWordQueue();
+}
+
+// Keyboard heatmap
+const keyboard = [
+    ['`', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '-', '='],
+    ['q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', '[', ']', '\\'],
+    ['a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', ';', "'"],
+    ['z', 'x', 'c', 'v', 'b', 'n', 'm', ',', '.', '/'],
+    ['space']
+];
+
+let keyErrors = {};
+
+function initializeKeyboard() {
+    const keyboardElement = document.getElementById('keyboard-heatmap');
+    keyboard.forEach(row => {
+        const rowElement = document.createElement('div');
+        rowElement.classList.add('keyboard-row');
+        row.forEach(key => {
+            const keyElement = document.createElement('div');
+            keyElement.classList.add('key');
+            keyElement.textContent = key;
+            if (key === 'space') {
+                keyElement.style.width = '200px';
+            }
+            rowElement.appendChild(keyElement);
+            keyErrors[key.toLowerCase()] = 0;
+        });
+        keyboardElement.appendChild(rowElement);
+    });
+}
+
+function updateHeatmap() {
+    const keys = document.querySelectorAll('.key');
+    const maxErrors = Math.max(...Object.values(keyErrors));
+    keys.forEach(key => {
+        const keyChar = key.textContent.toLowerCase();
+        const intensity = keyErrors[keyChar] / maxErrors;
+        key.style.backgroundColor = `rgb(${Math.round(255 * intensity)}, 0, 0)`;
+    });
+}
+
+function trackKeyError(typedChar, correctChar) {
+    if (typedChar !== correctChar) {
+        keyErrors[correctChar.toLowerCase()] = (keyErrors[correctChar.toLowerCase()] || 0) + 1;
+        updateHeatmap();
+    }
+}
+
+// Learning analytics
+let typingAnalytics = {
+    fastestWPM: 0,
+    averageWPM: 0
+};
+
+function updateAnalytics() {
+    typingAnalytics.fastestWPM = Math.max(typingAnalytics.fastestWPM, wpm);
+    typingAnalytics.averageWPM = (typingAnalytics.averageWPM * score + wpm) / (score + 1);
+
+    const analyticsContent = document.getElementById('analytics-content');
+    analyticsContent.innerHTML = `
+        <div class="analytics-item"><span>Fastest WPM:</span> <span>${typingAnalytics.fastestWPM}</span></div>
+        <div class="analytics-item"><span>Average WPM:</span> <span>${Math.round(typingAnalytics.averageWPM)}</span></div>
+    `;
+}
+
+function getTopMistakes() {
+    return Object.entries(keyErrors)
+        .sort((a, b) => b[1] - a[1])
+        .slice(0, 5)
+        .map(([key, count]) => `${key}: ${count}`)
+        .join(', ');
+}
+
+function endGame() {
+    clearInterval(gameInterval);
+    inputField.disabled = true;
+    startButton.disabled = false;
+    const topMistakes = getTopMistakes();
+    const message = `Game Over!
+
+Words typed: ${score}
+Final WPM: ${wpm}
+Level reached: ${level}
+Highest streak: ${streak}
+Top 5 mistakes: ${topMistakes}`;
+    setTimeout(() => alert(message), 100);
+}
+
+// Event listeners
+inputField.addEventListener('input', () => {
+    const currentInput = inputField.value;
+    const currentWord = wordQueue[0];
+    correctCharacters = 0;
+    
+    [...currentInput].forEach((char, index) => {
+        if (char === currentWord[index]) {
+            correctCharacters++;
+        } else {
+            trackKeyError(char, currentWord[index]);
+        }
+    });
+    
+    if (currentInput === currentWord) {
+        updateScore();
+        updateGame();
+    } else if (currentInput.length === currentWord.length) {
+        streak = 0;
+        updateStreakIndicator();
+    }
+});
+
+startButton.addEventListener('click', startGame);
+
+difficultyButtons.forEach(btn => {
+    btn.addEventListener('click', (event) => setDifficulty(event.target.dataset.difficulty));
+});
+
+// Initialize the game
+updateWordQueue();
+initializeKeyboard();
+    </script>
+</body>
+</html>
