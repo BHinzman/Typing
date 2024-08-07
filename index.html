@@ -510,7 +510,7 @@ function displayWords() {
     wordsDisplay.innerHTML = '';
     wordQueue.forEach((word, index) => {
         const wordSpan = document.createElement('span');
-        wordSpan.textContent = word;
+        wordSpan.textContent = word; // Keep original capitalization for display
         wordSpan.classList.add('word');
         if (index === 0) wordSpan.classList.add('current-word');
         wordsDisplay.appendChild(wordSpan);
@@ -658,7 +658,7 @@ function updateHeatmap() {
 
 function trackKeyError(typedChar, correctChar) {
     if (typedChar !== correctChar) {
-        keyErrors[correctChar.toLowerCase()] = (keyErrors[correctChar.toLowerCase()] || 0) + 1;
+        keyErrors[correctChar] = (keyErrors[correctChar] || 0) + 1;
         updateHeatmap();
     }
 }
@@ -705,8 +705,8 @@ Top 5 mistakes: ${topMistakes}`;
 
 // Event listeners
 inputField.addEventListener('input', () => {
-    const currentInput = inputField.value;
-    const currentWord = wordQueue[0];
+    const currentInput = inputField.value.toLowerCase();
+    const currentWord = wordQueue[0].toLowerCase();
     correctCharacters = 0;
     
     [...currentInput].forEach((char, index) => {
